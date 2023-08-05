@@ -33,6 +33,10 @@ The following images are arranged thusly: Original Image -> Retroized Images
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/a206a1d3-98d5-49b7-a303-2021ca53320b)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c6672257-7148-43af-85bf-ce1c165376cb)  |
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b9e64ea3-006f-46ed-8de3-924011402499)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/2bc043a5-e2db-4cc4-8044-c1850447a240)  |
 
+## Thanks and Stuff
+[YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
+@dwringer on InvokeAI Discord server for the Image Enhance node. I gutted it and used it as a starting point. lol
+
 ## Palette Credit
 Since palettes are cloned from [Astropulse](https://github.com/Astropulse)'s [sd-palettize](https://github.com/Astropulse/sd-palettize/tree/main) repo, I'll mirror the credit for those palettes here.
 
