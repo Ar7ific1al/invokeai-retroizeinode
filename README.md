@@ -19,6 +19,8 @@ NOTE: Palette images should be PNG images saved with indexed color, NOT RGB or R
 - `Use Palette`: If switched on (default: off), the image will use the specified color palette to palettize the image.
 - `Color Palette`: The color palette to use for palettizing the image. There are ten palettes included in this repository, borrowed from [Astropulse](https://github.com/Astropulse/sd-palettize/tree/main/palettes).
 - `Custom Palette`: If `Custom` is specified in the `Color Palette` selector, you can enter the name of an unlisted palette located in the `/palettes/` subfolder, e.g. `new-palette.png`
+  - Subfolders within `/palettes/` are also supported. If you wish to organize your palettes, you can simply enter a path relative to `/palettes/`. For example, `mypalettes/new-palette.png` will grab `new-palette.png` from `.venv/Lib/site-packages/invokeai/app/invocations/palettes/mypalettes/`
+  - Ths path and filename is ***CaSe SeNsItIvE!***
 - `Quantize`: If switched on (default: off), the image will be quantized (reduced in color) to the specified number of colors.
 - `Max Colors`: The number of colorse for quantization of the image. This can be used together with `Use Palette` to further reduce the colors of the image. Keep in mind you likely won't notice a difference if your Color Palette already has fewer colors than Max Colors.
 - `Dither`: If switched on (default: off), the image will have Floyd-Steinberg dithering applied.
