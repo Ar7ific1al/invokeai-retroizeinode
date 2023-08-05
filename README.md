@@ -36,6 +36,7 @@ The following images are arranged thusly: Original Image -> Retroized Images
 ## Thanks and Stuff
 [YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
 
+
 @dwringer on InvokeAI Discord server for the Image Enhance node. I gutted it and used it as a starting point. lol
 
 ## Palette Credit
