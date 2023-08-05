@@ -88,8 +88,8 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
     downsample:     int = Field(default=10, description="Amount to downsample image; larger = smaller image")
     upsample:       bool = Field(default=True, description="Upsample image back to original resolution")
     use_palette:    bool = Field(default=False, description="Apply a color palette to the image")
-    palette:        PALETTE = Field(default="atari-8-bit.png", description="Color palette to apply to the image")
-    custom_palette: str = Field(default="", description="Custom palette image name, including \".png\" extension")
+    #palette:        PALETTE = Field(default="atari-8-bit.png", description="Color palette to apply to the image")
+    custom_palette: str = Field(default="", description="Custom palette image path, including \".png\" extension")
     quantize:       bool = Field(default=False, description="Palettize image based on max colors, if Use Palette = false")
     max_colors:     int = Field(default=128, description="Max colors for quantized image; more = slower")
     dither:         bool = Field(default=False, description="Apply dithering to image to preserve details")
@@ -122,10 +122,12 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
         
         if self.use_palette:
             palette_path = Path().resolve() / palettes_path
-            palette = self.palette
-            if palette == "Custom":
-                palette = self.custom_palette
-            palette_img = Image.open(palette_path / palette)
+            palette = self.custom_palette
+            #if palette == "Custom":
+            #palette = self.palette
+            palette = self.custom_palette.replace('"', '')
+            #palette_img = Image.open(palette_path / palette)
+            palette_img = Image.open(palette)
             image_out = apply_palette(image_out, palette_img)
             
         if self.quantize:
