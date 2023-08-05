@@ -31,3 +31,7 @@ The following images are arranged thusly: Original Image -> Retroized Images
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/5737b133-69b9-448c-83b3-a39501e855fc)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/e9dcfe34-fc71-48bf-99ac-46e22d2e2f05)  |
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/a206a1d3-98d5-49b7-a303-2021ca53320b)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c6672257-7148-43af-85bf-ce1c165376cb)  |
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b9e64ea3-006f-46ed-8de3-924011402499)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/2bc043a5-e2db-4cc4-8044-c1850447a240)  |
+
+### Palette Credit
+Since palettes are cloned from [Astropulse](https://github.com/Astropulse)'s [sd-palettize](https://github.com/Astropulse/sd-palettize/tree/main) repo, I'll mirror the credit for those palettes here.
+`ENDESGA Adigun A. Polack Luis Miguel Maldonado PICO-8 Gabriel C. Nintendo Commodore Microsoft Atari`
