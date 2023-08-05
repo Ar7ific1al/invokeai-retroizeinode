@@ -65,14 +65,8 @@ def quantize_colors(image, max_colors):
     
     return quantized
 
-def dither_colors(image, amount):
+def dither_colors(image):
     image = image.convert('P', dither=Image.FLOYDSTEINBERG)
-    
-    # Optionally increase dithering amount by converting to RGB and back 
-    for i in range(amount):
-        image = convert_rgb(image)
-        image = image.convert('P', dither=Image.FLOYDSTEINBERG)
-    image = convert_rgb(image)
     return image
 
 def apply_palette(image, palette_img):  
@@ -94,7 +88,6 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
     quantize:       bool = Field(default=False, description="Palettize image based on max colors, if Palette = false")
     max_colors:     int = Field(default=128, description="Max colors for quantized image; more = slower")
     dither:         bool = Field(default=False, description="Apply dithering to image to preserve details")
-    dither_amount:  int = Field(default=1, description="Dithering amount")
     # fmt: on
 
     class Config(InvocationConfig):
@@ -134,7 +127,7 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
             image_out = quantize_colors(image_out, self.max_colors)
         
         if self.dither:
-            image_out = dither_colors(image_out, self.dither_amount)
+            image_out = dither_colors(image_out)
         
 
         image_dto = context.services.images.create(
