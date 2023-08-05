@@ -1,5 +1,14 @@
-from typing import Literal, Optional
+'''
+Thanks to Claude.ai for helping me figure out how to even understand where to begin. I don't know Python at all, and haven't done any programming in a long time.
+Thanks to @dwringer from InvokeAI Discord for their Enhance Image node which I gutted to get a skeleton to work with. lol
+Credit to Astropulse https://github.com/Astropulse for...
+    https://github.com/Astropulse/pixeldetector: Inspired this project; ended up not using any of their code but they still deserve recognition.
+    https://github.com/Astropulse/sd-palettize/tree/main: Color palettes included in this repo cloned from sd-palettize.
+    
+'''
 
+from typing import Literal, Optional
+from pathlib import Path
 from PIL import Image, ImagePalette
 from pydantic import Field
 
@@ -15,9 +24,6 @@ from .image import(
     PILInvocationConfig,
     ImageOutput
 )
-
-import numpy as np
-from pathlib import Path
 
 PALETTE = Literal[
     "aap-64.png",
@@ -64,6 +70,7 @@ def quantize_colors(image, max_colors):
     return quantized
 
 def dither_colors(image):
+    image = image.convert('RGB')
     image = image.convert('P', dither=Image.FLOYDSTEINBERG)
     return image
 
@@ -72,7 +79,7 @@ def apply_palette(image, palette_img):
     return quantized
 
 class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
-    ''' Pixelize an image. Optionally upsample to original size, and palettize the image to max_colors '''
+    ''' Retroize an image. Downsample, upsample, palettize, quantize, and dither. '''
     # fmt: off
     type: Literal["retroize"] = "retroize"
     
@@ -81,9 +88,9 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
     downsample:     int = Field(default=10, description="Amount to downsample image; larger = smaller image")
     upsample:       bool = Field(default=True, description="Upsample image back to original resolution")
     use_palette:    bool = Field(default=False, description="Apply a color palette to the image")
-    color_palette:  PALETTE = Field(default="atari-8-bit.png", description="Color palette to apply to the image")
-    custom_palette: str = Field(default="", description="Custom palette image name")
-    quantize:       bool = Field(default=False, description="Palettize image based on max colors, if Palette = false")
+    palette:        PALETTE = Field(default="atari-8-bit.png", description="Color palette to apply to the image")
+    custom_palette: str = Field(default="", description="Custom palette image name, including \".png\" extension")
+    quantize:       bool = Field(default=False, description="Palettize image based on max colors, if Use Palette = false")
     max_colors:     int = Field(default=128, description="Max colors for quantized image; more = slower")
     dither:         bool = Field(default=False, description="Apply dithering to image to preserve details")
     # fmt: on
@@ -115,7 +122,7 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
         
         if self.use_palette:
             palette_path = Path().resolve() / palettes_path
-            palette = self.color_palette
+            palette = self.palette
             if palette == "Custom":
                 palette = self.custom_palette
             palette_img = Image.open(palette_path / palette)
