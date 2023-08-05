@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 
-from PIL import Image, ImageOps, ImageDraw, ImagePalette
+from PIL import Image, ImagePalette
 from pydantic import Field
 
 from ..models.image import ImageCategory, ImageField, ResourceOrigin
@@ -17,8 +17,6 @@ from .image import(
 )
 
 import numpy as np
-from itertools import product
-from sklearn.cluster import KMeans
 from pathlib import Path
 
 PALETTE = Literal[
