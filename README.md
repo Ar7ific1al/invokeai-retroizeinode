@@ -8,6 +8,7 @@ This is a Python script for InvokeAI Nodes to "Retroize" images in the node grap
 - Palettize images (palette transfer/enforce color palette)
 - Quantize images (reduce colors)
 - Apply dithering
+
 All options are executed in the order displayed on the node (Downsample -> Upsample -> Palettize -> Quantize -> Dither)
 
 NOTE: Palette images should be PNG images saved with indexed color, NOT RGB or RGBA images.
@@ -32,7 +33,7 @@ The following images are arranged thusly: Original Image -> Retroized Images
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/a206a1d3-98d5-49b7-a303-2021ca53320b)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c6672257-7148-43af-85bf-ce1c165376cb)  |
 | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b9e64ea3-006f-46ed-8de3-924011402499)  | ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/2bc043a5-e2db-4cc4-8044-c1850447a240)  |
 
-### Palette Credit
+## Palette Credit
 Since palettes are cloned from [Astropulse](https://github.com/Astropulse)'s [sd-palettize](https://github.com/Astropulse/sd-palettize/tree/main) repo, I'll mirror the credit for those palettes here.
 
 `ENDESGA Adigun A. Polack Luis Miguel Maldonado PICO-8 Gabriel C. Nintendo Commodore Microsoft Atari`
