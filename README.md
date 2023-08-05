@@ -1,8 +1,7 @@
 # invokeai-retroizeinode
 This is a Python script for InvokeAI Nodes to "Retroize" images in the node graph.
 
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/26a66056-16a1-4547-a5d3-b295321b2dde)
-
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c2abe8ff-fc8b-4e42-9f83-5c2ada82181b)
 
 ## Features
 - Downsample and upsample to "pixelize" the image
