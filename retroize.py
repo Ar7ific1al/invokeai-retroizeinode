@@ -75,6 +75,8 @@ def dither_colors(image):
     return image
 
 def apply_palette(image, palette_img):  
+    quantized = image
+    quantized = convert_rgb(quantized)
     quantized = image.quantize(palette=palette_img, dither=Image.Dither.NONE)    
     return quantized
 
@@ -108,7 +110,9 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
         width, height = image_out.size
         size = self.downsample
         palettes_path = ".venv/Lib/site-packages/invokeai/app/invocations/palettes"
-                
+        
+        image_out = convert_rgb(image_out)
+        
         if size < 1:
             size = 1
         elif size > 30:
