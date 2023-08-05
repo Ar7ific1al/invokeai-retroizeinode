@@ -34,4 +34,5 @@ The following images are arranged thusly: Original Image -> Retroized Images
 
 ### Palette Credit
 Since palettes are cloned from [Astropulse](https://github.com/Astropulse)'s [sd-palettize](https://github.com/Astropulse/sd-palettize/tree/main) repo, I'll mirror the credit for those palettes here.
+
 `ENDESGA Adigun A. Polack Luis Miguel Maldonado PICO-8 Gabriel C. Nintendo Commodore Microsoft Atari`
