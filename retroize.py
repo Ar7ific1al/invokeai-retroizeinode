@@ -109,7 +109,7 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
         image_out = context.services.images.get_pil_image(self.image.image_name)
         width, height = image_out.size
         size = self.downsample
-        palettes_path = ".venv/Lib/site-packages/invokeai/app/invocations/palettes"
+        #palettes_path = "some path to palettes to be figured out later lol"
         
         image_out = convert_rgb(image_out)
         
@@ -125,7 +125,7 @@ class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
             image_out = upsample(image_out, width, height)
         
         if self.use_palette:
-            palette_path = Path().resolve() / palettes_path
+            #palette_path = Path().resolve() / palettes_path
             palette = self.custom_palette
             #if palette == "Custom":
             #palette = self.palette
