@@ -286,7 +286,7 @@ class GetPaletteInvocation(BaseInvocation, PILInvocationConfig):
     
     #   Inputs
     image:          Optional[ImageField] = Field(default = None, description = "Input image to grab a palette from")
-    save:           bool = Field(default = True, description = "Save palette PNG to specified path with optional name")
+    export:           bool = Field(default = True, description = "Save palette PNG to specified path with optional name")
     path:           str = Field(default="", description = "Path to save the palette image")
     name:           str = Field(default="", description = "Name for the palette image")
     #fmt: on
@@ -302,7 +302,7 @@ class GetPaletteInvocation(BaseInvocation, PILInvocationConfig):
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image_out = context.services.images.get_pil_image(self.image.image_name)
         
-        if self.save:
+        if self.export:
             path = self.path
             if path == "":
                 raise ValueError("No save path specified.")
@@ -318,11 +318,12 @@ class GetPaletteInvocation(BaseInvocation, PILInvocationConfig):
                 if ".png" not in name:
                     name = name + ".png"
                 palette_image.save(path / name)
+                image_out = palette_image
         else:
             image_out = get_palette(image_out)
         
         #   Do NOT convert palette image to RGB; it needs to be indexed color, not RGB, to be used as a palette
-        image_dto = dto(context, image_out, self.id, self.save)
+        image_dto = dto(context, image_out, self.id, self.export)
         
         return ImageOutput(image = ImageField(image_name = image_dto.image_name),
                             width = image_dto.width,
