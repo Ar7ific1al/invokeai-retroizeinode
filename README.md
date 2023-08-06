@@ -16,18 +16,17 @@ The following image was used with each of the nodes below.
 
 
 ## Pixelize
-<p align="center">
-    paste pixelize image
-</p>
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/d18be520-b871-457a-a856-d3ed92084538)
+
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
+
 ### Inputs
 - Image: Image to Pixelize
 - Downsample: Amount to downsample the image. Higher numbers will make the image smaller.
 - Upsample: Resize the image back to its original dimensions, giving it the pixelized look.
 
 ## Palettize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/d18be520-b871-457a-a856-d3ed92084538)
 
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
 
 ### Inputs
 - Image: Image to Palettize
