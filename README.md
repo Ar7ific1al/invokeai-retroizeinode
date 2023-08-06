@@ -25,12 +25,9 @@ The following image was used with each of the nodes below.
 - Upsample: Resize the image back to its original dimensions, giving it the pixelized look.
 
 ## Palettize
-<p align="center">
-    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/d18be520-b871-457a-a856-d3ed92084538)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/d18be520-b871-457a-a856-d3ed92084538)
 
-    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
-
-</p>
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
 
 ### Inputs
 - Image: Image to Palettize
@@ -38,26 +35,20 @@ The following image was used with each of the nodes below.
 - Palette Path: Path to a palette image not in your InvokeAI gallery
 
 ## Quantize
-<p align="center">
-    paste quantize image
-</p>
+
 
 ### Inputs
 - Image: Image to Quantize
 - Colors: Number of colors to reduce the image to, up to a max of 256 colors.
 
 ## Ditherize
-<p align="center">
-    paste ditherize images
-</p>
+
 
 ### Inputs
 - Image: Image to Ditherize
 
 ## Get Palette
-<p align="center">
-    paste get palette image
-</p>
+
 
 ### Inputs
 - Image: Image to get a palette from
