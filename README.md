@@ -1,8 +1,6 @@
 # Retroize Nodes
 This is a collection of Nodes for InvokeAI to "Retroize". Any image can be given a fresh coat of retro paint with these nodes.
 
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/0b3797cd-83eb-469c-b60e-852148bf6582)
-
 ## Nodes
 - **Pixelize:** Downsample and upsample images, giving them a pixelated look
 - **Palettize:** Apply a color palette to images
