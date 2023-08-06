@@ -66,11 +66,10 @@ def ditherize(image):
     return image
 
 def palettize(image, palette):  
-    palettized = image
-    palettized = convert_rgb(palettized)
+    palettized = convert_rgb(image)
     if palette.mode != 'P':
         palette = palette.convert('P', dither=Image.NONE)
-    palettized = image.quantize(palette=palette, dither=Image.Dither.NONE)    
+    palettized = palettized.quantize(palette=palette, dither=Image.Dither.NONE)    
     return palettized
 
 def get_palette(image):
@@ -222,18 +221,22 @@ class PalettizeInvocation(BaseInvocation, PILInvocationConfig):
         
         image_out = convert_rgb(image_out)
         
-        if self.palette_image == None:
-            palette = self.palette_path
-            if palette == '':
-                raise ValueError("No palette file specified.")
+        if self.palette_path == '':
+            print("Palette path is empty.")
+            if self.palette_image == None:
+                raise ValueError("No palette image or path was specified.")
             else:
-                #   Trim " from file path for lazy users like me (:
-                palette = palette.replace('"', '')
-                palette_image = Image.open(palette)
+                print("Using input image as palette.")
+                palette_image = context.services.images.get_pil_image(self.palette_image.image_name)
                 image_out = palettize(image_out, palette_image)
         else:
-            palette_image = context.services.images.get_pil_image(self.palette_image.image_name)
+            print("Palette path is " + self.palette_path)
+            palette = self.palette_path
+            #   Trim " from file path for lazy users like me (:
+            palette = palette.replace('"', '')
+            palette_image = Image.open(palette)
             image_out = palettize(image_out, palette_image)
+        
         
         image_out = convert_rgb(image_out)
         
@@ -329,84 +332,3 @@ class GetPaletteInvocation(BaseInvocation, PILInvocationConfig):
                             width = image_dto.width,
                             height = image_dto.height,
         )
-
-
-# class RetroizeInvocation(BaseInvocation, PILInvocationConfig):
-    # ''' Retroize an image. Downsample, upsample, palettize, quantize, and dither. '''
-    # # fmt: off
-    # type: Literal["retroize"] = "retroize"
-    
-    # # Inputs
-    # image:          Optional[ImageField] = Field(default=None, description="Input image for pixelization/palettization")
-    # downsample:     int = Field(default=10, description="Amount to downsample image; larger = smaller image")
-    # upsample:       bool = Field(default=True, description="Upsample image back to original resolution")
-    # use_palette:    bool = Field(default=False, description="Apply a color palette to the image")
-    # #palette:        PALETTE = Field(default="atari-8-bit.png", description="Color palette to apply to the image")
-    # custom_palette: str = Field(default="", description="Custom palette image path, including \".png\" extension")
-    # quantize:       bool = Field(default=False, description="Palettize image based on max colors, if Use Palette = false")
-    # max_colors:     int = Field(default=128, description="Max colors for quantized image; more = slower")
-    # dither:         bool = Field(default=False, description="Apply dithering to image to preserve details")
-    # # fmt: on
-
-    # class Config(InvocationConfig):
-        # schema_extra = {
-            # "ui": {
-                # "title": "Retroize",
-                # "tags": ["image", "pixel", "quantize", "palette", "retro"]
-            # },
-        # }
-
-    # def invoke(self, context: InvocationContext) -> ImageOutput:
-        # image_out = context.services.images.get_pil_image(self.image.image_name)
-        # width, height = image_out.size
-        # size = self.downsample
-        # #palettes_path = "some path to palettes to be figured out later lol"
-        
-        # image_out = convert_rgb(image_out)
-        
-        # if size < 1:
-            # size = 1
-        # elif size > 30:
-            # size = 30
-        
-        # if size > 1:
-            # image_out = pixelize_image(image_out, size)
-            
-        # if self.upsample:
-            # image_out = upsample(image_out, width, height)
-        
-        # if self.use_palette:
-            # #palette_path = Path().resolve() / palettes_path
-            # palette = self.custom_palette
-            # if palette == '':
-                # raise ValueError("No palette file specified.")
-            # else:
-                # #if palette == "Custom":
-                    # #palette = self.palette
-                # #   Remove " from file path for lazy users like me (:
-                # palette = self.custom_palette.replace('"', '')
-                # #palette_img = Image.open(palette_path / palette)
-                # palette_img = Image.open(palette)
-                # image_out = apply_palette(image_out, palette_img)
-            
-        # if self.quantize:
-            # image_out = quantize_colors(image_out, self.max_colors)
-        
-        # if self.dither:
-            # image_out = dither_colors(image_out)
-        
-        # image_out = convert_rgb(image_out)
-        
-        # image_dto = context.services.images.create(
-            # image=image_out,
-            # image_origin=ResourceOrigin.INTERNAL,
-            # image_category=ImageCategory.GENERAL,
-            # node_id=self.id,
-            # session_id=context.graph_execution_state_id,
-            # is_intermediate=self.is_intermediate
-        # )
-
-        # return ImageOutput(image=ImageField(image_name=image_dto.image_name),
-                            # width=image_dto.width,
-                            # height=image_dto.height,
-        # )
