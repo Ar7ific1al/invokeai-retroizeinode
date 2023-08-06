@@ -57,7 +57,7 @@ def pixelize(image, samples, upsample):
 def quantize(image, max_colors):
     image = convert_rgb(image)
     # Use PIL.Image.quantize() method 
-    quantized = image.quantize(max_colors)    
+    quantized = image.quantize(max_colors)
     return quantized
 
 def ditherize(image):
@@ -113,7 +113,18 @@ def dto(context, image_out, id, intermediate):
         node_id = id,
         session_id = context.graph_execution_state_id,
         is_intermediate = intermediate
-    ) 
+    )
+
+def increment_filename(path, name):
+    if (path / name).is_file():
+        increment = 1
+        while True:
+            increment += 1
+            new_name = name.split(".png")[0] + str(increment) + ".png"
+            if (path / new_name).is_file():
+                continue
+            else:
+                return new_name
 
 class PixelizeInvocation(BaseInvocation, PILInvocationConfig):
     ''' Pixelize an image. Downsample, upsample. '''
@@ -320,6 +331,8 @@ class GetPaletteInvocation(BaseInvocation, PILInvocationConfig):
                     name = context.graph_execution_state_id
                 if ".png" not in name:
                     name = name + ".png"
+                if (path / name).is_file():
+                    name = increment_filename(path, name)
                 palette_image.save(path / name)
                 image_out = palette_image
         else:
