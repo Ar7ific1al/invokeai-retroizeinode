@@ -10,6 +10,11 @@ This is a collection of Nodes for InvokeAI to "Retroize". Any image can be given
 
 NOTE: *ANY* image can be passed as a palette image to Palettize, but this is not the intended behavior.
 
+The following image was used with each of the nodes below.
+
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c784e438-8c84-4414-8c7d-2cad62a38f89)
+
+
 ## Pixelize
 <p align="center">
     paste pixelize image
@@ -21,7 +26,10 @@ NOTE: *ANY* image can be passed as a palette image to Palettize, but this is not
 
 ## Palettize
 <p align="center">
-    paste palettize image
+    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/d18be520-b871-457a-a856-d3ed92084538)
+
+    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
+
 </p>
 
 ### Inputs
