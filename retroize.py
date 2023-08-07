@@ -25,20 +25,6 @@ from .image import(
     ImageOutput
 )
 
-PALETTE = Literal[
-    "aap-64.png",
-    "atari-8-bit.png",
-    "commodore64.png",
-    "endesga-32.png",
-    "fantasy-24.png",
-    "microsoft-windows.png",
-    "NES.png",
-    "nintendo-gameboy.png",
-    "pico-8.png",
-    "slso8.png",
-    "Custom",
-]
-
 #   Check color mode and convert to RGB if needed
 def convert_rgb(image):
     # Convert back to RGB if needed
@@ -116,11 +102,21 @@ def dto(context, image_out, id, intermediate):
     )
 
 def increment_filename(path, name):
-    if (path / name).is_file():
-        increment = 1
+    increment = 0
+    while True:
+        increment += 1
+        new_name = name.split(".png")[0] + str(increment) + ".png"
+        if (path / new_name).is_file():
+            continue
+        else:
+            return new_name
+
+def numberize_filename(path, name):
+    increment = -1
+    if "\\x" in name:
         while True:
-            increment += 1
-            new_name = name.split(".png")[0] + str(increment) + ".png"
+            increment +=1
+            new_name = name.split(".png")[0].replace("\\x", str(increment)) + ".png"
             if (path / new_name).is_file():
                 continue
             else:
@@ -331,6 +327,9 @@ class GetPaletteInvocation(BaseInvocation, PILInvocationConfig):
                     name = context.graph_execution_state_id
                 if ".png" not in name:
                     name = name + ".png"
+                #   Replace "\x" in string with 0 to begin incremental palettes
+                if "\\x" in name:
+                    name = numberize_filename(path, name)
                 if (path / name).is_file():
                     name = increment_filename(path, name)
                 palette_image.save(path / name)
