@@ -45,8 +45,8 @@ class PixelizeInvocation(BaseInvocation, PILInvocationConfig):
 
         if factor < 1:
             factor = 1
-        elif factor > 10:
-            factor = 10
+        elif factor > 20:
+            factor = 20
         
         pixelize_image = pixelize_image.resize((width // factor, height // factor), Image.BOX)
         if self.upsample:
