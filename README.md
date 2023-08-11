@@ -23,19 +23,24 @@ The following image was used with each of the nodes below.
 - Upsample: Resize the image back to its original dimensions, giving it the pixelized look.
 
 ## Palettize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/1595d288-4a9b-40ea-b44e-0d8c98287525)    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da211ec0-5d1e-4f34-8a52-24f41271431a)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/75ea039a-2f3c-4d8e-ac78-70724a21416d)    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da211ec0-5d1e-4f34-8a52-24f41271431a)
 
 ### Inputs
 - Image: Image to Palettize
-- Palette Image: A palette image to use for palettizing the input image
-- Palette Path: Path to a palette image not in your InvokeAI gallery
+- Palette Image: A palette image to use for palettizing the input image.
+- Palette Path: Path to a palette image not in your InvokeAI gallery.
+- Dither: Apply dithering. (Operates differently from Ditherize node) (Effect does not work if `Prequantize` is switched on)
+- Prequantize: Quantize using a different method prior to applying a palette. This crushes the image to 256 colors _before_ palettizing, and quantizes using the select3ed method. Note: Disables dither effect.
+- Quantizer: The method for prequantizing.
 
 ## Quantize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/62e2d5b5-d6c9-404d-b22e-9a74b2712514)    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/9816c0c3-aef6-48cb-a8b2-b1d05e398f24)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/ae472c40-4ae2-4c4f-b6ca-9b7bd461afdf)    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/9816c0c3-aef6-48cb-a8b2-b1d05e398f24)
 
 ### Inputs
 - Image: Image to Quantize
 - Colors: Number of colors to reduce the image to, up to a max of 256 colors.
+- Method: How to quantize the image.
+- Kmeans: I'm not sure what this does but have fun with it I guess.
 
 ## Ditherize
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/8a7ea0f7-605c-46e2-8f83-ff1add680db9)    ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/307974d7-6f0f-4866-9352-507ebed0e6f1)
