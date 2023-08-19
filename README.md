@@ -1,8 +1,14 @@
 # Retroize Nodes
-This is a collection of Nodes for InvokeAI to "Retroize". Any image can be given a fresh coat of retro paint with these nodes.
+This is a collection of Nodes for InvokeAI to "Retroize" images. Any image can be given a fresh coat of retro paint with these nodes, either from your gallery or from within the graph itself.
+
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/8988f990-f20a-4331-ada2-bd28ec99169e)
+
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da1ec440-f325-4477-bdf7-003ddaef59ae)
+
 
 ## Nodes
 - **Get Palette:** Get a color palette from an image
+- **Get Palette (Advanced):** Get a color palette from an image, with some advanced output options
 - **Retro Bitize:** Convert the image to pure one-bit pixels (black and white)
 - **Retro Ditherize:** Apply Floyd-Steinberg dithering to an image
 - **Retro Palettize:** Apply a color palette to images
@@ -16,9 +22,18 @@ The following image was used with each of the nodes below.
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c784e438-8c84-4414-8c7d-2cad62a38f89)
 
 ## Get Palette
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b880dc57-073d-48af-897d-5e35e2f0281d)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b487aeea-ad3d-48d4-ada5-6a48cbe7f531)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f0038f80-c667-4b5e-925e-d47daf9ce50a)
+
+### Inputs
+- Image: Image to get a peltte from
+- Intermediate: If Intermediate is switched on, the palette will not be saved to the gallery. **!!This switch will be removed once InvokeAI is updated to allow image output nodes to bypass the gallery!!**
+
+## Get Palette (Advanced)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b88537a6-53e9-4731-a78a-d64e8bde7a28)
+
+The advanced Get Palette node offers advanced users the ability to export the palette to a specific location on their system, optionally with a specific file name. This is useful for instance if you would rather have your palettes exported to a central location rather than to your InvokeAI gallery, for example to a dedicated palettes folder which you use for other applications such as Photoshop, Aseprite, or other applications which can make use of indexed palette images.
 
 ### Inputs
 - Image: Image to get a palette from
@@ -55,6 +70,10 @@ The following image was used with each of the nodes below.
 - Dither: Apply dithering. (Operates differently from Ditherize node) (Effect does not work if `Prequantize` is switched on)
 - Prequantize: Quantize using a different method prior to applying a palette. This crushes the image to 256 colors _before_ palettizing, and quantizes using the select3ed method. Note: Disables dither effect.
 - Quantizer: The method for prequantizing.
+### Palettes
+Palettes should be indexed PNG images, otherwise they may not work as expected. The images should be one pixel tall and up to 256 pixels wide.
+
+Additional palettes can either be created yourself, obtained from images using the Get Palette node, or retrieved from various online sources. One such online source is [lospec](https://lospec.com/palette-list), which has a ton of palettes available for download.
 
 ## Retro Pixelize
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
@@ -77,8 +96,6 @@ The following image was used with each of the nodes below.
 - Colors: Number of colors to reduce the image to, up to a max of 256 colors.
 - Method: How to quantize the image.
 - Kmeans: I'm not sure what this does but have fun with it I guess.
-
-
 
 ## Thanks and Stuff
 - [YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
