@@ -81,12 +81,11 @@ The following image was used with each of the nodes below.
 
 
 ## Thanks and Stuff
-[YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
-
-
-@dwringer on InvokeAI Discord server for the Image Enhance node. I gutted it and used it as a starting point. lol It also served as some inspiration for these nodes.
+- [YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
+- @dwringer on InvokeAI Discord server for the Image Enhance node. I gutted it and used it as a starting point. lol It also served as some inspiration for these nodes.
+- [Astropulse](https://github.com/Astropulse) for their [sd-palettize](https://github.com/Astropulse/sd-palettize/tree/main) and [pixeldetector](https://github.com/Astropulse/pixeldetector) projects which served as direct inspiration for this project.
 
 ## Palette Credit
-Since the palette images in the root `palettes` folder are cloned from [Astropulse](https://github.com/Astropulse)'s [sd-palettize](https://github.com/Astropulse/sd-palettize/tree/main) repo, I'll mirror the credit for those palettes here:
+Since the palette images in the root `palettes` folder are cloned from Astropulse's sd-palettize repo, I'll mirror the credit for those palettes here:
 
 `ENDESGA Adigun A. Polack Luis Miguel Maldonado PICO-8 Gabriel C. Nintendo Commodore Microsoft Atari`
