@@ -73,9 +73,52 @@ def numberize_filename(path, name):
                 
 
 class RetroGetPaletteInvocation(BaseInvocation, PILInvocationConfig):
+    ''' Get palette from an image, 256 colors max. '''
+    #fmt: off
+    type:   Literal["retro_get_palette_basic"] = "retro_get_palette_basic"
+
+    #   Inputs
+    image:          Optional[ImageField] = Field(default = None, description = "Input image to grab a palette from")
+    intermediate:   bool = Field(default = False, description = "Mark as intermediate")
+    #fmt: on
+    
+    class Config(InvocationConfig):
+        schema_extra = {
+            "ui": {
+                "title": "Get Palette",
+                "tags": ["image", "palette"]
+            },
+        }
+    
+    def invoke(self, context: InvocationContext) -> ImageOutput:
+        image_out = context.services.images.get_pil_image(self.image.image_name)
+        
+        if image_out.mode != 'RGB':
+            image_out = image_out.convert('RGB')
+        
+        image_out = get_palette(image_out)
+        
+        #   Do NOT convert palette image to RGB; it needs to be indexed color, not RGB, to be used as a palette
+        dto = context.services.images.create(
+            image = image_out,
+            image_origin = ResourceOrigin.INTERNAL,
+            image_category = ImageCategory.GENERAL,
+            node_id = self.id,
+            session_id = context.graph_execution_state_id,
+            is_intermediate = self.intermediate
+        )
+
+        return ImageOutput(
+            image = ImageField(image_name = dto.image_name),
+            width = dto.width,
+            height = dto.height,
+        )
+        
+
+class RetroGetPaletteAdvInvocation(BaseInvocation, PILInvocationConfig):
     ''' Get palette from an image, 256 colors max. Optionally export to a user-defined location. '''
     #fmt: off
-    type:   Literal["retro_get_palette"] = "retro_get_palette"
+    type:   Literal["retro_get_palette_adv"] = "retro_get_palette_adv"
 
     #   Inputs
     image:          Optional[ImageField] = Field(default = None, description = "Input image to grab a palette from")
@@ -87,7 +130,7 @@ class RetroGetPaletteInvocation(BaseInvocation, PILInvocationConfig):
     class Config(InvocationConfig):
         schema_extra = {
             "ui": {
-                "title": "Get Palette",
+                "title": "Get Palette (Advanced)",
                 "tags": ["image", "palette"]
             },
         }
