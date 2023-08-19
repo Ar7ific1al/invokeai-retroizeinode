@@ -65,9 +65,9 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 
 ### Inputs
 - Image: Image to Palettize
-- Palette Image: A palette image to use for palettizing the input image.
-- Palette Path: Path to a palette image not in your InvokeAI gallery.
-- Dither: Apply dithering. (Operates differently from Ditherize node) (Effect does not work if `Prequantize` is switched on)
+- Palette Image: A palette image to use for palettizing the input image. **Will be ignored if a palette image is specified via Palette Path.**
+- Palette Path: Path to a palette image not in your InvokeAI gallery. **Will bypass the Palete Image input and use the file specified by this path.**
+- Dither: Apply dithering. (Operates differently from Ditherize node) (Effect may not work as expected while `Prequantize` is switched on)
 - Prequantize: Quantize using a different method prior to applying a palette. This crushes the image to 256 colors _before_ palettizing, and quantizes using the select3ed method. Note: Disables dither effect.
 - Quantizer: The method for prequantizing.
 ### Palettes
