@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 from PIL import Image
 from pydantic import Field
+from .retro_getpalette import get_palette
 
 from ..models.image import ImageCategory, ImageField, ResourceOrigin
 from .baseinvocation import(
@@ -38,9 +39,10 @@ class RetroQuantizeInvocation(BaseInvocation, PILInvocationConfig):
 
     #   Inputs
     image:          Optional[ImageField] = Field(default = None, description = "Input image for pixelization")
-    colors:         int = Field(default = 64, description = "Number of colors the image should be reduced to")
+    colors:         int = Field(default = 64, gt = 0, le = 256, description = "Number of colors the image should be reduced to")
     method:         PIL_QUANTIZE_MODES = Field(default = "Median Cut", description = "Quantization method")
-    kmeans:         int = Field(default = 0, description = "k_means")
+    kmeans:         int = Field(default = 0, ge = 0, description = "k_means")
+    dither:         bool = Field(default = True, description = "Dither quantized image")
     #fmt: on
 
     class Config(InvocationConfig):
@@ -61,15 +63,19 @@ class RetroQuantizeInvocation(BaseInvocation, PILInvocationConfig):
 
         kmeans = self.kmeans
 
-        if colors < 1:
-            colors = 1
-        elif colors > 256:
-            colors = 256
+        # if colors < 1:
+            # colors = 1
+        # elif colors > 256:
+            # colors = 256
 
-        if kmeans < 0:
-            kmeans = 1
+        # if kmeans < 0:
+            # kmeans = 1
         
-        quantized_image = quantized_image.quantize(colors = colors, method = PIL_QUANTIZE_MAP[self.method], kmeans = kmeans).convert('RGB')
+        if self.dither:
+            palette = get_palette(quantized_image.quantize(colors, method = PIL_QUANTIZE_MAP[self.method]).convert('RGB'))
+            quantized_image = quantized_image.quantize(colors = colors, palette = palette, method = PIL_QUANTIZE_MAP[self.method], kmeans = kmeans, dither = Image.FLOYDSTEINBERG).convert('RGB')
+        else:
+            quantized_image = quantized_image.quantize(colors = colors, method = PIL_QUANTIZE_MAP[self.method], kmeans = kmeans).convert('RGB')
 
         dto = context.services.images.create(
             image = quantized_image,
