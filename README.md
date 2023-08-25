@@ -57,6 +57,7 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 
 ### Inputs
 - Image: Image to Ditherize
+NOTE: This node doesn't achieve the same appearance as using Quantize with Dither. It does provide a different look, however, so it is left here as is.
 
 ## Retro Palettize
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/75ea039a-2f3c-4d8e-ac78-70724a21416d)
