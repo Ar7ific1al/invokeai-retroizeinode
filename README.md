@@ -10,7 +10,7 @@ This is a collection of Nodes for InvokeAI to "Retroize" images. Any image can b
 - **Get Palette:** Get a color palette from an image
 - **Get Palette (Advanced):** Get a color palette from an image, with some advanced output options
 - **Retro Bitize:** Convert the image to pure one-bit pixels (black and white)
-- **Retro Ditherize:** Apply Floyd-Steinberg dithering to an image
+- **Retro Ditherize:** Apply Floyd-Steinberg dithering to an image. **!Deprecated!** This node is more or less deprecated by the Dither switch on Quantize, but it's left here just in case someone might want to use it.
 - **Retro Palettize:** Apply a color palette to images
 - **Retro Pixelize:** Downsample and upsample images, giving them a pixelated look
 - **Retro Quantize:** Reduce colors of an image, giving them that retro feel
@@ -87,7 +87,7 @@ Additional palettes can either be created yourself, obtained from images using t
 
 
 ## Retro Quantize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/ae472c40-4ae2-4c4f-b6ca-9b7bd461afdf)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/2a47f086-9b10-4e5a-be4a-81bc6aaa8cfe)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/9816c0c3-aef6-48cb-a8b2-b1d05e398f24)
 
@@ -96,6 +96,7 @@ Additional palettes can either be created yourself, obtained from images using t
 - Colors: Number of colors to reduce the image to, up to a max of 256 colors.
 - Method: How to quantize the image.
 - Kmeans: I'm not sure what this does but have fun with it I guess.
+- Dither: Dither the image when quantizing. This will use the Quantizing method for this process, as well.
 
 ## Thanks and Stuff
 - [YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
