@@ -1,38 +1,28 @@
 from typing import Literal, Optional
 from PIL import Image
-from pydantic import Field
+from pydantic import BaseModel, Field
 
-from ..models.image import ImageCategory, ImageField, ResourceOrigin
-from .baseinvocation import(
+from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.models.image import (
+    ImageCategory,
+    ResourceOrigin
+)
+from invokeai.app.invocations.baseinvocation import(
     BaseInvocation,
-    BaseInvocationOutput,
+    InputField,
+    FieldDescriptions,
     InvocationContext,
-    InvocationConfig
+    invocation
 )
 
-from .image import(
-    PILInvocationConfig,
-    ImageOutput
-)
-
-class PixelizeInvocation(BaseInvocation, PILInvocationConfig):
+@invocation("retro_pixelize", title = "Pixelize", tags = ["retro", "image", "pixel", "scale", "resize"], category = "image")
+class PixelizeInvocation(BaseInvocation):
     ''' Pixelize an image. Downsample, upsample. '''
-    #fmt: off
-    type:   Literal["retro_pixelize"] = "retro_pixelize"
 
     #   Inputs
-    image:              Optional[ImageField] = Field(default = None, description = "Input image for pixelization")
-    downsample_factor:  int = Field(default = 4, description = "Image resizing factor. Higher = smaller image.")
-    upsample:           bool = Field(default=True, description = "Upsample to original resolution")
-    #fmt: on
-
-    class Config(InvocationConfig):
-        schema_extra = {
-            "ui": {
-                "title": "Retro Pixelize",
-                "tags": ["image", "retro", "pixel"]
-            },
-        }
+    image:              ImageField = InputField(default = None, description = "Input image for pixelization")
+    downsample_factor:  int = InputField(default = 4, description = "Image resizing factor. Higher = smaller image.")
+    upsample:           bool = InputField(default=True, description = "Upsample to original resolution")
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image = context.services.images.get_pil_image(self.image.image_name)
@@ -59,7 +49,8 @@ class PixelizeInvocation(BaseInvocation, PILInvocationConfig):
             image_category = ImageCategory.GENERAL,
             node_id = self.id,
             session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate
+            is_intermediate = self.is_intermediate,
+            workflow = self.workflow
         )
 
         return ImageOutput(

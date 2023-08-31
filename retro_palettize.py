@@ -1,19 +1,20 @@
 from typing import Literal, Optional
 from pathlib import Path
 from PIL import Image, ImagePalette
-from pydantic import Field
+from pydantic import BaseModel, Field
 
-from ..models.image import ImageCategory, ImageField, ResourceOrigin
-from .baseinvocation import(
-    BaseInvocation,
-    BaseInvocationOutput,
-    InvocationContext,
-    InvocationConfig
+from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.models.image import (
+    ImageCategory,
+    ResourceOrigin
 )
 
-from .image import(
-    PILInvocationConfig,
-    ImageOutput
+from invokeai.app.invocations.baseinvocation import(
+    BaseInvocation,
+    InputField,
+    FieldDescriptions,
+    InvocationContext,
+    invocation
 )
 
 #   Define Quantize methods list
@@ -41,32 +42,21 @@ def palettize(image, palette_image, prequantize, method, dither):
         palettized = palettized.quantize(colors = 256, method=method, dither=Image.Dither.NONE).convert('RGB')
 
     if palette_image.mode != 'P':
-        palette_image = palette_image.convert('P', dither=Image.NONE)
+        palette_image = palette_image.convert('P')
 
     return palettized.quantize(palette=palette_image, method=method, dither=dmode)
 
-
-class RetroPalettizeInvocation(BaseInvocation, PILInvocationConfig):
+@invocation("retro_palettize", title = "Palettize", tags = ["retro", "image", "color", "palette"], category = "image")
+class RetroPalettizeInvocation(BaseInvocation):
     ''' Palettize an image by applying a color palette '''
-    #fmt: off
-    type:   Literal["retro_palettize"] = "retro_palettize"
 
     #   Inputs
-    image:          Optional[ImageField] = Field(default = None, description = "Input image for pixelization")
-    palette_image:  Optional[ImageField] = Field(default = None, description = "Palette image")
-    palette_path:   str = Field(default = "", description = "Palette image path, including \".png\" extension")
-    dither:         bool = Field(default = False, description = "Apply dithering to image when palettizing")
-    prequantize:    bool = Field(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")
-    quantizer:      PIL_QUANTIZE_MODES = Field(default = "Fast Octree", description = "Palettizer quantization method")
-    #fmt: on
-
-    class Config(InvocationConfig):
-        schema_extra = {
-            "ui": {
-                "title": "Retro Palettize",
-                "tags": ["image", "retro", "palette", "pixel", "color"]
-            },
-        }
+    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
+    palette_image:  ImageField = InputField(default = None, description = "Palette image")
+    palette_path:   str = InputField(default = "", description = "Palette image path, including \".png\" extension")
+    dither:         bool = InputField(default = False, description = "Apply dithering to image when palettizing")
+    prequantize:    bool = InputField(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")
+    quantizer:      PIL_QUANTIZE_MODES = InputField(default = "Fast Octree", description = "Palettizer quantization method")
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image = context.services.images.get_pil_image(self.image.image_name)
@@ -99,7 +89,8 @@ class RetroPalettizeInvocation(BaseInvocation, PILInvocationConfig):
             image_category = ImageCategory.GENERAL,
             node_id = self.id,
             session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate
+            is_intermediate = self.is_intermediate,
+            workflow = self.workflow
         )
 
         return ImageOutput(

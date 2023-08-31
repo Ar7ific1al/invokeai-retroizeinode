@@ -1,19 +1,23 @@
 from typing import Literal, Optional
 from pathlib import Path
 from PIL import Image, ImagePalette
-from pydantic import Field
+from pydantic import BaseModel, Field
 
-from ..models.image import ImageCategory, ImageField, ResourceOrigin
-from .baseinvocation import(
-    BaseInvocation,
-    BaseInvocationOutput,
-    InvocationContext,
-    InvocationConfig
+from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.models.image import (
+    ImageCategory,
+    ResourceOrigin
 )
 
-from .image import(
-    PILInvocationConfig,
-    ImageOutput
+from invokeai.app.invocations.baseinvocation import(
+    BaseInvocation,
+    BaseInvocationOutput,
+    FieldDescriptions,
+    InvocationContext,
+    InputField,
+    OutputField,
+    invocation,
+    invocation_output
 )
 
 
@@ -70,25 +74,23 @@ def numberize_filename(path, name):
                 continue
             else:
                 return new_name
-                
 
-class RetroGetPaletteInvocation(BaseInvocation, PILInvocationConfig):
+
+@invocation_output("get_palette_output")
+class PaletteOutput(BaseInvocationOutput):
+    """ Base class for Cell Fracture output """
+    
+    image:      ImageField = InputField(default = None, description = "The palette output")
+    
+    class Config:
+        schema_extra = {"required": ["type", "palette"]}
+
+@invocation("get_palette", title = "Get Palette", tags = ["retro", "image", "pixel", "palette"], category = "image")
+class RetroGetPaletteInvocation(BaseInvocation):
     ''' Get palette from an image, 256 colors max. '''
-    #fmt: off
-    type:   Literal["retro_get_palette_basic"] = "retro_get_palette_basic"
 
     #   Inputs
-    image:          Optional[ImageField] = Field(default = None, description = "Input image to grab a palette from")
-    intermediate:   bool = Field(default = False, description = "Mark as intermediate")
-    #fmt: on
-    
-    class Config(InvocationConfig):
-        schema_extra = {
-            "ui": {
-                "title": "Get Palette",
-                "tags": ["image", "palette"]
-            },
-        }
+    image:          ImageField  = InputField(default = None, description = "Input image to grab a palette from")
     
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image_out = context.services.images.get_pil_image(self.image.image_name)
@@ -105,35 +107,22 @@ class RetroGetPaletteInvocation(BaseInvocation, PILInvocationConfig):
             image_category = ImageCategory.GENERAL,
             node_id = self.id,
             session_id = context.graph_execution_state_id,
-            is_intermediate = self.intermediate
+            is_intermediate = self.is_intermediate,
+            workflow = self.workflow
         )
 
-        return ImageOutput(
-            image = ImageField(image_name = dto.image_name),
-            width = dto.width,
-            height = dto.height,
+        return PaletteOutput(
+            image = ImageField(image_name = dto.image_name)
         )
         
-
-class RetroGetPaletteAdvInvocation(BaseInvocation, PILInvocationConfig):
+@invocation("get_palette_adv", title = "Get Palette (Advanced)", tags = ["retro", "image", "pixel", "palette"], category = "image")
+class RetroGetPaletteAdvInvocation(BaseInvocation):
     ''' Get palette from an image, 256 colors max. Optionally export to a user-defined location. '''
-    #fmt: off
-    type:   Literal["retro_get_palette_adv"] = "retro_get_palette_adv"
-
     #   Inputs
-    image:          Optional[ImageField] = Field(default = None, description = "Input image to grab a palette from")
-    export:         bool = Field(default = True, description = "Save palette PNG to specified path with optional name")
-    path:           str = Field(default="", description = "Path to save the palette image")
-    name:           str = Field(default="", description = "Name for the palette image")
-    #fmt: on
-
-    class Config(InvocationConfig):
-        schema_extra = {
-            "ui": {
-                "title": "Get Palette (Advanced)",
-                "tags": ["image", "palette"]
-            },
-        }
+    image:          ImageField = InputField(default = None, description = "Input image to grab a palette from")
+    export:         bool = InputField(default = True, description = "Save palette PNG to specified path with optional name")
+    path:           str = InputField(default="", description = "Path to save the palette image")
+    name:           str = InputField(default="", description = "Name for the palette image")
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image_out = context.services.images.get_pil_image(self.image.image_name)
@@ -173,11 +162,10 @@ class RetroGetPaletteAdvInvocation(BaseInvocation, PILInvocationConfig):
             image_category = ImageCategory.GENERAL,
             node_id = self.id,
             session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate
+            is_intermediate = self.is_intermediate,
+            workflow = self.workflow
         )
 
-        return ImageOutput(
-            image = ImageField(image_name = dto.image_name),
-            width = dto.width,
-            height = dto.height,
+        return PaletteOutput(
+            image = ImageField(image_name = dto.image_name)
         )
