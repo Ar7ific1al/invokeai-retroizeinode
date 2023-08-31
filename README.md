@@ -9,26 +9,27 @@ This is a collection of Nodes for InvokeAI to "Retroize" images. Any image can b
 ## Nodes
 - **Get Palette:** Get a color palette from an image
 - **Get Palette (Advanced):** Get a color palette from an image, with some advanced output options
-- **Retro Bitize:** Convert the image to pure one-bit pixels (black and white)
-- **Retro Ditherize:** Apply Floyd-Steinberg dithering to an image. **!Deprecated!** This node is more or less deprecated by the Dither switch on Quantize, but it's left here just in case someone might want to use it.
-- **Retro Palettize:** Apply a color palette to images
-- **Retro Pixelize:** Downsample and upsample images, giving them a pixelated look
-- **Retro Quantize:** Reduce colors of an image, giving them that retro feel
+- **Bitize:** Convert the image to pure one-bit pixels (black and white)
+- **Halftone:** Give the image a halftone-like effect, either colored or grayscale
+- **Palettize:** Apply a color palette to images
+- **Pixelize:** Downsample and upsample images, giving them a pixelated look
+- **Quantize:** Reduce colors of an image, giving them that retro feel
 
 NOTE: **_ANY_** image can be passed as a palette image to Palettize, but this is not the intended behavior, and may not work as as expected. _You've been warned_.
+
+All nodes can be found in Nodes search under the "retro" tag!
 
 The following image was used with each of the nodes below.
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/c784e438-8c84-4414-8c7d-2cad62a38f89)
 
 ## Get Palette
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b487aeea-ad3d-48d4-ada5-6a48cbe7f531)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/5b0fc04c-6ad0-40c0-a39f-7683b696ee74)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f0038f80-c667-4b5e-925e-d47daf9ce50a)
 
 ### Inputs
 - Image: Image to get a peltte from
-- Intermediate: If Intermediate is switched on, the palette will not be saved to the gallery. **!!This switch will be removed once InvokeAI is updated to allow image output nodes to bypass the gallery!!**
 
 ## Get Palette (Advanced)
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/b88537a6-53e9-4731-a78a-d64e8bde7a28)
@@ -41,7 +42,7 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 - Path: If Export is switched on, the palette will be saved to this location. Expects a full file path, e.g. `C:\Some\Path`
 - Name: If Export is switched on, the palette will be saved with this name. Name can be left blank and the palette will be given a name automatically. `.PNG` is not required to be part of the name.
 
-## Retro Bitize
+## Bitize
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/abce10bc-c203-4cc7-ab19-a4411a18fc79)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/8f90294c-cbaa-4191-a566-3445b9334923)
@@ -50,16 +51,22 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 - Image: Image to Bitize.
 - Dither: Dither the image.
 
-## Retro Ditherize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/8a7ea0f7-605c-46e2-8f83-ff1add680db9)
+## Halftone
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/15003a65-f150-441b-a59e-5dfbb0a3cc40)
 
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/307974d7-6f0f-4866-9352-507ebed0e6f1)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/7080200f-7ce6-421e-b98d-02e11effa90b)
 
 ### Inputs
-- Image: Image to Ditherize
-NOTE: This node doesn't achieve the same appearance as using Quantize with Dither. It does provide a different look, however, so it is left here as is.
+- Image: Image to apply halftone to
+- Shape: Shape of the halftone effect. Circle, square, or triangle. (Default: Circle)
+- Size: The diameter, in pixels, of the shape.
+- Rotation: The rotation, in degrees, of the shape. Not important for circles. **Ignored if Random Rotation is on!**
+- Random Rotation: Apply a random rotation within `Rotation Threshold` degrees. **Ignores Rotation parameter!**
+- Rotation Threshold: Amount to rotate the shape when `Random Rotation` is switched on. E.g. if set to 90, the shape will be rotated randomly between 0 and 90 degrees.
+- Jitter: Threshold for random size of the shape. E.g. if `Size` is 8, and `Jitter` is 3, the size of each shape will vary between 5 and 11 pixels in diameter.
+- Overlay: Overlay the halftone image on the color image, producing a colored halftone image.
 
-## Retro Palettize
+## Palettize
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/75ea039a-2f3c-4d8e-ac78-70724a21416d)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da211ec0-5d1e-4f34-8a52-24f41271431a)
@@ -76,7 +83,7 @@ Palettes should be indexed PNG images, otherwise they may not work as expected. 
 
 Additional palettes can either be created yourself, obtained from images using the Get Palette node, or retrieved from various online sources. One such online source is [lospec](https://lospec.com/palette-list), which has a ton of palettes available for download.
 
-## Retro Pixelize
+## Pixelize
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/f8238901-1ffe-4f70-8492-60dc7e28647c)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/d18be520-b871-457a-a856-d3ed92084538)
@@ -86,9 +93,8 @@ Additional palettes can either be created yourself, obtained from images using t
 - Downsample: Amount to downsample the image. Higher numbers will make the image smaller.
 - Upsample: Resize the image back to its original dimensions, giving it the pixelized look.
 
-
-## Retro Quantize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/2a47f086-9b10-4e5a-be4a-81bc6aaa8cfe)
+## Quantize
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/ae472c40-4ae2-4c4f-b6ca-9b7bd461afdf)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/9816c0c3-aef6-48cb-a8b2-b1d05e398f24)
 
@@ -97,7 +103,6 @@ Additional palettes can either be created yourself, obtained from images using t
 - Colors: Number of colors to reduce the image to, up to a max of 256 colors.
 - Method: How to quantize the image.
 - Kmeans: I'm not sure what this does but have fun with it I guess.
-- Dither: Dither the image when quantizing. This will use the Quantizing method for this process, as well.
 
 ## Thanks and Stuff
 - [YMGenesis](https://github.com/ymgenesis) for helping figure some things out, providing advice and tips for improvements :)
