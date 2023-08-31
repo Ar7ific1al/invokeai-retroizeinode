@@ -51,11 +51,6 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 - Image: Image to Bitize.
 - Dither: Dither the image.
 
-## Palettize
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/75ea039a-2f3c-4d8e-ac78-70724a21416d)
-
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da211ec0-5d1e-4f34-8a52-24f41271431a)
-
 ## Halftone
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/94a58569-29a6-4757-9f71-ecb0da85d430)
 
@@ -70,6 +65,11 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 - Rotation Threshold: Amount to rotate the shape when `Random Rotation` is switched on. E.g. if set to 90, the shape will be rotated randomly between 0 and 90 degrees.
 - Jitter: Threshold for random size of the shape. E.g. if `Size` is 8, and `Jitter` is 3, the size of each shape will vary between 5 and 11 pixels in diameter.
 - Overlay: Overlay the halftone image on the color image, producing a colored halftone image.
+
+## Palettize
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/75ea039a-2f3c-4d8e-ac78-70724a21416d)
+
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da211ec0-5d1e-4f34-8a52-24f41271431a)
 
 ### Inputs
 - Image: Image to Palettize
