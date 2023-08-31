@@ -52,9 +52,9 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 - Dither: Dither the image.
 
 ## Halftone
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/94a58569-29a6-4757-9f71-ecb0da85d430)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/15003a65-f150-441b-a59e-5dfbb0a3cc40)
 
-![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/6a592fad-33ca-473e-bd0f-916630a94da4)
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/7080200f-7ce6-421e-b98d-02e11effa90b)
 
 ### Inputs
 - Image: Image to apply halftone to
