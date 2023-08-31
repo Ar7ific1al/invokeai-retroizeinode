@@ -1,6 +1,5 @@
-from typing import Literal, Optional
+from typing import Literal
 from PIL import Image
-from pydantic import BaseModel, Field
 from .retro_getpalette import get_palette
 
 from invokeai.app.invocations.primitives import ImageField, ImageOutput
@@ -11,7 +10,6 @@ from invokeai.app.models.image import (
 from invokeai.app.invocations.baseinvocation import(
     BaseInvocation,
     InputField,
-    FieldDescriptions,
     InvocationContext,
     invocation
 )

@@ -1,7 +1,5 @@
-from typing import Literal, Optional
-from pathlib import Path
-from PIL import Image, ImagePalette
-from pydantic import BaseModel, Field
+from typing import Literal
+from PIL import Image
 
 from invokeai.app.invocations.primitives import ImageField, ImageOutput
 from invokeai.app.models.image import (
@@ -12,7 +10,6 @@ from invokeai.app.models.image import (
 from invokeai.app.invocations.baseinvocation import(
     BaseInvocation,
     InputField,
-    FieldDescriptions,
     InvocationContext,
     invocation
 )

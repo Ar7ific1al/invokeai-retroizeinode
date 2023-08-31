@@ -1,6 +1,5 @@
-from typing import Literal, Optional
+from typing import Literal
 from PIL import Image
-from pydantic import BaseModel, Field
 import numpy as np
 import cv2
 import random
@@ -13,7 +12,6 @@ from invokeai.app.models.image import (
 from invokeai.app.invocations.baseinvocation import(
     BaseInvocation,
     InputField,
-    FieldDescriptions,
     InvocationContext,
     invocation
 )
