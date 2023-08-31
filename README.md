@@ -10,6 +10,7 @@ This is a collection of Nodes for InvokeAI to "Retroize" images. Any image can b
 - **Get Palette:** Get a color palette from an image
 - **Get Palette (Advanced):** Get a color palette from an image, with some advanced output options
 - **Bitize:** Convert the image to pure one-bit pixels (black and white)
+- **Halftone:** Give the image a halftone-like effect, either colored or grayscale
 - **Palettize:** Apply a color palette to images
 - **Pixelize:** Downsample and upsample images, giving them a pixelated look
 - **Quantize:** Reduce colors of an image, giving them that retro feel
@@ -54,6 +55,21 @@ The advanced Get Palette node offers advanced users the ability to export the pa
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/75ea039a-2f3c-4d8e-ac78-70724a21416d)
 
 ![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/da211ec0-5d1e-4f34-8a52-24f41271431a)
+
+## Halftone
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/94a58569-29a6-4757-9f71-ecb0da85d430)
+
+![image](https://github.com/Ar7ific1al/invokeai-retroizeinode/assets/2306586/6a592fad-33ca-473e-bd0f-916630a94da4)
+
+### Inputs
+- Image: Image to apply halftone to
+- Shape: Shape of the halftone effect. Circle, square, or triangle. (Default: Circle)
+- Size: The diameter, in pixels, of the shape.
+- Rotation: The rotation, in degrees, of the shape. Not important for circles. **Ignored if Random Rotation is on!**
+- Random Rotation: Apply a random rotation within `Rotation Threshold` degrees. **Ignores Rotation parameter!**
+- Rotation Threshold: Amount to rotate the shape when `Random Rotation` is switched on. E.g. if set to 90, the shape will be rotated randomly between 0 and 90 degrees.
+- Jitter: Threshold for random size of the shape. E.g. if `Size` is 8, and `Jitter` is 3, the size of each shape will vary between 5 and 11 pixels in diameter.
+- Overlay: Overlay the halftone image on the color image, producing a colored halftone image.
 
 ### Inputs
 - Image: Image to Palettize
