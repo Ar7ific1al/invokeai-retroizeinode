@@ -1,6 +1,8 @@
 from PIL import Image
 
-from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.invocations.primitives import (
+    ImageField, ImageOutput
+)
 from invokeai.app.models.image import (
     ImageCategory,
     ResourceOrigin
@@ -17,31 +19,23 @@ class PixelizeInvocation(BaseInvocation):
     ''' Pixelize an image. Downsample, upsample. '''
 
     #   Inputs
-    image:              ImageField = InputField(default = None, description = "Input image for pixelization")
-    downsample_factor:  int = InputField(default = 4, description = "Image resizing factor. Higher = smaller image.")
-    upsample:           bool = InputField(default=True, description = "Upsample to original resolution")
+    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
+    downsample_factor:  int         = InputField(default = 4, gt = 0, le = 30, description = "Image resizing factor. Higher = smaller image.")
+    upsample:           bool        = InputField(default = True, description = "Upsample to original resolution")
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image = context.services.images.get_pil_image(self.image.image_name)
         width, height = image.size
         factor = self.downsample_factor
 
-        pixelize_image = image
-        if pixelize_image.mode != 'RGB':
-            pixelize_image = pixelize_image.convert('RGB')
+        image = image.convert("RGB") if image.mode != "RGB" else image
 
-        if factor < 1:
-            factor = 1
-        elif factor > 20:
-            factor = 20
-        
-        pixelize_image = pixelize_image.resize((width // factor, height // factor), Image.BOX)
-        if self.upsample:
-            pixelize_image = pixelize_image.resize((width, height), Image.NEAREST)
-        
-        
+        image = image.resize((width // factor, height // factor), Image.BOX)
+
+        image = image.resize((width, height), Image.NEAREST) if self.upsample else image
+
         dto = context.services.images.create(
-            image = pixelize_image,
+            image = image,
             image_origin = ResourceOrigin.INTERNAL,
             image_category = ImageCategory.GENERAL,
             node_id = self.id,

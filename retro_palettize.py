@@ -1,7 +1,9 @@
 from typing import Literal
 from PIL import Image
 
-from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.invocations.primitives import (
+    ImageField, ImageOutput
+)
 from invokeai.app.models.image import (
     ImageCategory,
     ResourceOrigin
@@ -27,13 +29,8 @@ PIL_QUANTIZE_MAP = {
     "Fast Octree": Image.Quantize.FASTOCTREE
 }
 
-
 def palettize(image, palette_image, prequantize, method, dither):
     palettized = image
-    dmode = Image.Dither.NONE
-
-    if dither:
-        dmode = Image.Dither.FLOYDSTEINBERG
 
     if prequantize:
         palettized = palettized.quantize(colors = 256, method=method, dither=Image.Dither.NONE).convert('RGB')
@@ -41,7 +38,7 @@ def palettize(image, palette_image, prequantize, method, dither):
     if palette_image.mode != 'P':
         palette_image = palette_image.convert('P')
 
-    return palettized.quantize(palette=palette_image, method=method, dither=dmode)
+    return palettized.quantize(palette=palette_image, method=method, dither = Image.Dither.FLOYDSTEINBERG if dither else Image.Dither.NONE)
 
 @invocation("retro_palettize", title = "Palettize", tags = ["retro", "image", "color", "palette"], category = "image")
 class RetroPalettizeInvocation(BaseInvocation):

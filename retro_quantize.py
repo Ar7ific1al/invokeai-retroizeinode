@@ -2,7 +2,9 @@ from typing import Literal
 from PIL import Image
 from .retro_getpalette import get_palette
 
-from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.invocations.primitives import (
+    ImageField, ImageOutput
+)
 from invokeai.app.models.image import (
     ImageCategory,
     ResourceOrigin
@@ -42,22 +44,17 @@ class RetroQuantizeInvocation(BaseInvocation):
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image = context.services.images.get_pil_image(self.image.image_name)
-        colors = self.colors
 
-        quantized_image = image
-        if quantized_image.mode != 'RGB':
-            quantized_image = quantized_image.convert('RGB')
+        image = image.convert("RGB") if image.mode != "RGB" else image
 
-        kmeans = self.kmeans
-        
         if self.dither:
-            palette = get_palette(quantized_image.quantize(colors, method = PIL_QUANTIZE_MAP[self.method]).convert('RGB'))
-            quantized_image = quantized_image.quantize(colors = colors, palette = palette, method = PIL_QUANTIZE_MAP[self.method], kmeans = kmeans, dither = Image.FLOYDSTEINBERG).convert('RGB')
+            palette = get_palette(image.quantize(self.colors, method = PIL_QUANTIZE_MAP[self.method]).convert('RGB'))
+            image = image.quantize(colors = self.colors, palette = palette, method = PIL_QUANTIZE_MAP[self.method], kmeans = self.kmeans, dither = Image.FLOYDSTEINBERG).convert('RGB')
         else:
-            quantized_image = quantized_image.quantize(colors = colors, method = PIL_QUANTIZE_MAP[self.method], kmeans = kmeans).convert('RGB')
+            image = image.quantize(colors = self.colors, method = PIL_QUANTIZE_MAP[self.method], kmeans = self.kmeans).convert('RGB')
 
         dto = context.services.images.create(
-            image = quantized_image,
+            image = image,
             image_origin = ResourceOrigin.INTERNAL,
             image_category = ImageCategory.GENERAL,
             node_id = self.id,

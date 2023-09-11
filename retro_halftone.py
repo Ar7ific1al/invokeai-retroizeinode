@@ -4,7 +4,9 @@ import numpy as np
 import cv2
 import random
 
-from invokeai.app.invocations.primitives import ImageField, ImageOutput
+from invokeai.app.invocations.primitives import (
+    ImageField, ImageOutput
+)
 from invokeai.app.models.image import (
     ImageCategory,
     ResourceOrigin
@@ -27,14 +29,14 @@ class RetroHalftoneInvocation(BaseInvocation):
     ''' Apply a halftone-like effect to images '''
 
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
-    shape:          SHAPES = InputField(default = "Circle", description = "Halftone shape")
-    size:           int = InputField(default = 16, description = "Size of halftone shape")
-    rotation:       int = InputField(default = 0, description = "Rotation in degrees of the halftone shape when Shape != Circle")
-    random_rotation: bool = InputField(default = False, description = "Rotate the shape with randomly with a threshold")
-    rotation_threshold: int = InputField(default = 0, description = "Threshold for random rotation of the halftone shape")
-    jitter:         int = InputField(default = 0, description = "Random size jitter threshold for the halftone shape")
-    overlay:        bool = InputField(default = False, description = "Overlay the halftone on the original image, creating a color halftone image")
+    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
+    shape:              SHAPES      = InputField(default = "Circle", description = "Halftone shape")
+    size:               int         = InputField(default = 16, description = "Size of halftone shape")
+    rotation:           int         = InputField(default = 0, description = "Rotation in degrees of the halftone shape when Shape != Circle")
+    random_rotation:    bool        = InputField(default = False, description = "Rotate the shape with randomly with a threshold")
+    rotation_threshold: int         = InputField(default = 0, description = "Threshold for random rotation of the halftone shape")
+    jitter:             int         = InputField(default = 0, description = "Random size jitter threshold for the halftone shape")
+    overlay:            bool        = InputField(default = False, description = "Overlay the halftone on the original image, creating a color halftone image")
     #fmt: on
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
