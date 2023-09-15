@@ -1,8 +1,9 @@
-from pathlib import Path
 from PIL import Image
+from pathlib import Path
 
 from invokeai.app.invocations.primitives import (
-    ImageField, ImageOutput
+    ImageField,
+    ImageOutput
 )
 from invokeai.app.models.image import (
     ImageCategory,
@@ -82,12 +83,12 @@ class PaletteOutput(BaseInvocationOutput):
     class Config:
         schema_extra = {"required": ["type", "palette"]}
 
-@invocation("get_palette", title = "Get Palette", tags = ["retro", "image", "pixel", "palette"], category = "image")
+@invocation("get_palette", title = "Get Palette", tags = ["retro", "image", "pixel", "palette"], category = "image", version = "1.0.0")
 class RetroGetPaletteInvocation(BaseInvocation):
-    ''' Get palette from an image, 256 colors max. '''
+    """ Get palette from an image, 256 colors max. """
 
     #   Inputs
-    image:          ImageField  = InputField(default = None, description = "Input image to grab a palette from")
+    image:          ImageField  = InputField(description = "Input image to grab a palette from")
     
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image_out = context.services.images.get_pil_image(self.image.image_name)
@@ -112,11 +113,11 @@ class RetroGetPaletteInvocation(BaseInvocation):
             image = ImageField(image_name = dto.image_name)
         )
         
-@invocation("get_palette_adv", title = "Get Palette (Advanced)", tags = ["retro", "image", "pixel", "palette"], category = "image")
+@invocation("get_palette_adv", title = "Get Palette (Advanced)", tags = ["retro", "image", "pixel", "palette"], category = "image", version = "1.0.0")
 class RetroGetPaletteAdvInvocation(BaseInvocation):
-    ''' Get palette from an image, 256 colors max. Optionally export to a user-defined location. '''
+    """ Get palette from an image, 256 colors max. Optionally export to a user-defined location. """
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image to grab a palette from")
+    image:          ImageField = InputField(description = "Input image to grab a palette from")
     export:         bool = InputField(default = True, description = "Save palette PNG to specified path with optional name")
     path:           str = InputField(default="", description = "Path to save the palette image")
     name:           str = InputField(default="", description = "Name for the palette image")

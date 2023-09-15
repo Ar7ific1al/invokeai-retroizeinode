@@ -1,11 +1,12 @@
-from typing import Literal
 from PIL import Image
+from typing import Literal
 import numpy as np
 import cv2
 import random
 
 from invokeai.app.invocations.primitives import (
-    ImageField, ImageOutput
+    ImageField,
+    ImageOutput
 )
 from invokeai.app.models.image import (
     ImageCategory,
@@ -24,12 +25,12 @@ SHAPES = Literal[
     "Triangle",
 ]
 
-@invocation("retro_halftone", title = "Halftone", tags = ["retro", "image", "color"], category = "image")
+@invocation("retro_halftone", title = "Halftone", tags = ["retro", "image", "color"], category = "image", version = "1.0.0")
 class RetroHalftoneInvocation(BaseInvocation):
-    ''' Apply a halftone-like effect to images '''
+    """ Apply a halftone-like effect to images """
 
     #   Inputs
-    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
+    image:              ImageField  = InputField(description = "Input image for pixelization")
     shape:              SHAPES      = InputField(default = "Circle", description = "Halftone shape")
     size:               int         = InputField(default = 16, description = "Size of halftone shape")
     rotation:           int         = InputField(default = 0, description = "Rotation in degrees of the halftone shape when Shape != Circle")

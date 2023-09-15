@@ -1,14 +1,18 @@
+from PIL import (
+    Image,
+    ImageDraw
+)
 import numpy as np
 import random
-from PIL import (
-    Image, ImageDraw
-)
 
 from invokeai.app.invocations.primitives import (
-    ImageField, ImageOutput, ColorField
+    ImageField,
+    ImageOutput,
+    ColorField
 )
 from invokeai.app.models.image import (
-    ImageCategory, ResourceOrigin
+    ImageCategory,
+    ResourceOrigin
 )
 from invokeai.app.invocations.baseinvocation import (
     BaseInvocation,
@@ -17,7 +21,7 @@ from invokeai.app.invocations.baseinvocation import (
     invocation,
 )
 
-@invocation("retro_scanlines_simple", title="Scan Lines", tags=["retro", "image", "color", "pixel", "line"], category="image")
+@invocation("retro_scanlines_simple", title="Scan Lines", tags=["retro", "image", "color", "pixel", "line"], category="image", version = "1.0.0")
 class RetroScanlinesSimpleInvocation(BaseInvocation):
     """ Apply a simple scan lines effect to the input image """
 

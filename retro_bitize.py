@@ -1,7 +1,8 @@
 from PIL import Image
 
 from invokeai.app.invocations.primitives import (
-    ImageField, ImageOutput
+    ImageField,
+    ImageOutput
 )
 from invokeai.app.models.image import (
     ImageCategory,
@@ -14,9 +15,9 @@ from invokeai.app.invocations.baseinvocation import(
     invocation
 )
 
-@invocation("retro_bitize", title = "Bitize", tags = ["retro", "image", "color", "pixel", "bit", "dither"], category = "image")
+@invocation("retro_bitize", title = "Bitize", tags = ["retro", "image", "color", "pixel", "bit", "dither"], category = "image", version = "1.0.0")
 class RetroBitizeInvocation(BaseInvocation):
-    ''' Crush an image to one-bit pixels '''
+    """ Crush an image to one-bit pixels """
 
     #   Inputs
     image:  ImageField  = InputField(description = "Input image for pixelization")

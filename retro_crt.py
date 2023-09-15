@@ -2,7 +2,8 @@ from PIL import Image
 import numpy as np
 
 from invokeai.app.invocations.primitives import (
-    ImageField, ImageOutput
+    ImageField,
+    ImageOutput
 )
 from invokeai.app.models.image import (
     ImageCategory,
@@ -15,7 +16,7 @@ from invokeai.app.invocations.baseinvocation import(
     invocation
 )
 
-@invocation("retro_crt_curvature", title = "CRT", tags = ["retro", "image", "distort"], category = "image")
+@invocation("retro_crt_curvature", title = "CRT", tags = ["retro", "image", "distort"], category = "image", version = "1.0.0")
 class RetroCRTCurvatureInvocation(BaseInvocation):
     """ Distort the input image, simulating CRT display curvature """
 

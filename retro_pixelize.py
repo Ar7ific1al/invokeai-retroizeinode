@@ -14,12 +14,12 @@ from invokeai.app.invocations.baseinvocation import(
     invocation
 )
 
-@invocation("retro_pixelize", title = "Pixelize", tags = ["retro", "image", "pixel", "scale", "resize"], category = "image")
+@invocation("retro_pixelize", title = "Pixelize", tags = ["retro", "image", "pixel", "scale", "resize"], category = "image", version = "1.0.0")
 class PixelizeInvocation(BaseInvocation):
-    ''' Pixelize an image. Downsample, upsample. '''
+    """ Pixelize an image. Downsample, upsample. """
 
     #   Inputs
-    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
+    image:              ImageField  = InputField(description = "Input image for pixelization")
     downsample_factor:  int         = InputField(default = 4, gt = 0, le = 30, description = "Image resizing factor. Higher = smaller image.")
     upsample:           bool        = InputField(default = True, description = "Upsample to original resolution")
 

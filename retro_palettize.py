@@ -1,8 +1,9 @@
-from typing import Literal
 from PIL import Image
+from typing import Literal
 
 from invokeai.app.invocations.primitives import (
-    ImageField, ImageOutput
+    ImageField,
+    ImageOutput
 )
 from invokeai.app.models.image import (
     ImageCategory,
@@ -40,13 +41,13 @@ def palettize(image, palette_image, prequantize, method, dither):
 
     return palettized.quantize(palette=palette_image, method=method, dither = Image.Dither.FLOYDSTEINBERG if dither else Image.Dither.NONE)
 
-@invocation("retro_palettize", title = "Palettize", tags = ["retro", "image", "color", "palette"], category = "image")
+@invocation("retro_palettize", title = "Palettize", tags = ["retro", "image", "color", "palette"], category = "image", version = "1.0.0")
 class RetroPalettizeInvocation(BaseInvocation):
-    ''' Palettize an image by applying a color palette '''
+    """ Palettize an image by applying a color palette """
 
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
-    palette_image:  ImageField = InputField(default = None, description = "Palette image")
+    image:          ImageField = InputField(description = "Input image for pixelization")
+    palette_image:  ImageField = InputField(description = "Palette image")
     palette_path:   str = InputField(default = "", description = "Palette image path, including \".png\" extension")
     dither:         bool = InputField(default = False, description = "Apply dithering to image when palettizing")
     prequantize:    bool = InputField(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")

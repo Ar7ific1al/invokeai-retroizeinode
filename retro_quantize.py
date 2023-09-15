@@ -1,5 +1,5 @@
-from typing import Literal
 from PIL import Image
+from typing import Literal
 from .retro_getpalette import get_palette
 
 from invokeai.app.invocations.primitives import (
@@ -31,12 +31,12 @@ PIL_QUANTIZE_MAP = {
     "Fast Octree": Image.Quantize.FASTOCTREE
 }
 
-@invocation("retro_quantize", title = "Quantize", tags = ["retro", "image", "pixel", "quantize"], category = "image")
+@invocation("retro_quantize", title = "Quantize", tags = ["retro", "image", "pixel", "quantize"], category = "image", version = "1.0.0")
 class RetroQuantizeInvocation(BaseInvocation):
-    ''' Quantize an image to 256 or less colors '''
+    """ Quantize an image to 256 or less colors """
 
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image for quantizing")
+    image:          ImageField = InputField(description = "Input image for quantizing")
     colors:         int = InputField(default = 64, gt = 0, le = 256, description = "Number of colors the image should be reduced to")
     method:         PIL_QUANTIZE_MODES = InputField(default = "Median Cut", description = "Quantization method")
     kmeans:         int = InputField(default = 0, ge = 0, description = "k_means")
