@@ -1,28 +1,19 @@
-from PIL import (
-    Image,
-    ImageDraw
-)
-import numpy as np
 import random
+from PIL import Image, ImageDraw
 
-from invokeai.app.invocations.primitives import (
+from invokeai.invocation_api import(
+    BaseInvocation,
+    InputField,
+    InvocationContext,
+    WithMetadata,
+    invocation,
     ImageField,
     ImageOutput,
     ColorField
 )
-from invokeai.app.models.image import (
-    ImageCategory,
-    ResourceOrigin
-)
-from invokeai.app.invocations.baseinvocation import (
-    BaseInvocation,
-    InputField,
-    InvocationContext,
-    invocation,
-)
 
-@invocation("retro_scanlines_simple", title="Scan Lines", tags=["retro", "image", "color", "pixel", "line"], category="image", version = "1.0.0")
-class RetroScanlinesSimpleInvocation(BaseInvocation):
+@invocation("retro_scanlines_simple", title="Scan Lines", tags=["retro", "image", "color", "pixel", "line"], category="image", version = "1.0.1")
+class RetroScanlinesSimpleInvocation(BaseInvocation, WithMetadata):
     """ Apply a simple scan lines effect to the input image """
 
     #   Inputs
@@ -35,7 +26,7 @@ class RetroScanlinesSimpleInvocation(BaseInvocation):
     vertical:       bool        = InputField(default = False, description = "Switch scanlines to vertical")
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
-        image = context.services.images.get_pil_image(self.image.image_name).convert("RGBA")
+        image = context.images.get_pil(self.image.image_name).convert("RGBA")
         width, height = image.size
         line_color = (self.line_color.r, self.line_color.g, self.line_color.b, self.line_color.a)
         
@@ -60,16 +51,8 @@ class RetroScanlinesSimpleInvocation(BaseInvocation):
                     draw.rectangle([(0, y), (width, y + int(line_height))], fill = line_color)
         
         scanlines_image = Image.alpha_composite(image, scanlines_image).convert("RGB")
-
-        dto = context.services.images.create(
-            image = scanlines_image,
-            image_origin = ResourceOrigin.INTERNAL,
-            image_category = ImageCategory.GENERAL,
-            node_id = self.id,
-            session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate,
-            workflow = self.workflow,
-        )
+        
+        dto = context.images.save(image = scanlines_image)
 
         return ImageOutput(
             image = ImageField(image_name = dto.image_name),

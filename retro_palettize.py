@@ -1,64 +1,113 @@
+from typing import Literal, Optional
 from PIL import Image
-from typing import Literal
+from .retro_helpers import palettize
+from .retro_helpers import PIL_QUANTIZE_MAP as QMap
+from .retro_helpers import PIL_QUANTIZE_MODES as QMode
+import os
 
-from invokeai.app.invocations.primitives import (
-    ImageField,
-    ImageOutput
-)
-from invokeai.app.models.image import (
-    ImageCategory,
-    ResourceOrigin
-)
-
-from invokeai.app.invocations.baseinvocation import(
+from invokeai.invocation_api import(
     BaseInvocation,
     InputField,
+    ImageField,
+    ImageOutput,
     InvocationContext,
+    WithMetadata,
     invocation
 )
 
-#   Define Quantize methods list
-PIL_QUANTIZE_MODES = Literal[
-    "Median Cut",
-    "Max Coverage",
-    "Fast Octree",
-]
 
-PIL_QUANTIZE_MAP = {
-    "Median Cut": Image.Quantize.MEDIANCUT,
-    "Max Coverage": Image.Quantize.MAXCOVERAGE,
-    "Fast Octree": Image.Quantize.FASTOCTREE
-}
+#   Palette cache
+palettes_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "palettes")
 
-def palettize(image, palette_image, prequantize, method, dither):
-    palettized = image
+os.makedirs(palettes_dir, exist_ok = True)
 
-    if prequantize:
-        palettized = palettized.quantize(colors = 256, method=method, dither=Image.Dither.NONE).convert('RGB')
+print(f"palettes_dir = {palettes_dir}")
 
-    if palette_image.mode != 'P':
-        palette_image = palette_image.convert('P')
+def list_palettes() -> list:
+    if not os.path.exists(palettes_dir):
+        return []
+    palettes = [f for f in os.listdir(palettes_dir) if f.lower().endswith((".png"))]
+    return sorted(palettes, key = lambda x: x.lower())
 
-    return palettized.quantize(palette=palette_image, method=method, dither = Image.Dither.FLOYDSTEINBERG if dither else Image.Dither.NONE)
+available_palettes = list_palettes()
 
-@invocation("retro_palettize", title = "Palettize", tags = ["retro", "image", "color", "palette"], category = "image", version = "1.0.0")
-class RetroPalettizeInvocation(BaseInvocation):
-    """ Palettize an image by applying a color palette """
+if available_palettes:
+    palettes_str = ", ".join([repr(f) for f in available_palettes])
+    PaletteLiteral = eval(f'Literal["None", {palettes_str}]')
+else:
+    PaletteLiteral = Literal["None"]
+
+
+def UpdatePalettes():
+    def list_palettes() -> list:
+        if not os.path.exists(palettes_dir):
+            return []
+        palettes = [f for f in os.listdir(palettes_dir) if f.lower().endswith((".png"))]
+        return sorted(palettes, key = lambda x: x.lower())
+
+    available_palettes = list_palettes()
+
+    if available_palettes:
+        palettes_str = ", ".join([repr(f) for f in available_palettes])
+        PaletteLiteral = eval(f'Literal["None", {palettes_str}]')
+    else:
+        PaletteLiteral = Literal["None"]
+
+
+@invocation("retro_palettize_adv", title = "Palettize Advanced", tags = ["retro", "image", "color", "palette"], category = "image", version = "1.0.1")
+class RetroPalettizeAdvInvocation(BaseInvocation, WithMetadata):
+    ''' Palettize an image by applying a color palette '''
 
     #   Inputs
-    image:          ImageField = InputField(description = "Input image for pixelization")
-    palette_image:  ImageField = InputField(description = "Palette image")
+    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
+    palette_image:  PaletteLiteral = InputField(default = None, description = "Palette image")
+    dither:         bool = InputField(default = False, description = "Apply dithering to image when palettizing")
+    prequantize:    bool = InputField(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")
+    quantizer:      QMode = InputField(default = "Fast Octree", description = "Palettizer quantization method")
+
+    def invoke(self, context: InvocationContext) -> ImageOutput:
+        image = context.images.get_pil(self.image.image_name)
+        
+        palettized_image = image
+        if palettized_image.mode != 'RGB':
+            palettized_image = palettized_image.convert('RGB')
+
+        if self.palette_image == None:
+                raise ValueError("No palette image or path was specified.")
+        else:
+            # print("Using input image as palette.")
+            palette_image = Image.open(os.path.join(palettes_dir, self.palette_image))
+            palettized_image = palettize(palettized_image, palette_image, self.prequantize, QMap[self.quantizer], self.dither)
+
+        palettized_image = palettized_image.convert('RGB')
+
+        dto = context.images.save(image = palettized_image)
+        
+        return ImageOutput(
+            image = ImageField(image_name = dto.image_name),
+            width = dto.width,
+            height = dto.height,
+        )
+
+
+@invocation("retro_palettize", title = "Palettize", tags = ["retro", "image", "color", "palette"], category = "image", version = "1.0.1")
+class RetroPalettizeInvocation(BaseInvocation, WithMetadata):
+    ''' Palettize an image by applying a color palette '''
+
+    #   Inputs
+    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
+    palette_image:  ImageField = InputField(default = None, description = "Palette image")
     palette_path:   str = InputField(default = "", description = "Palette image path, including \".png\" extension")
     dither:         bool = InputField(default = False, description = "Apply dithering to image when palettizing")
     prequantize:    bool = InputField(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")
-    quantizer:      PIL_QUANTIZE_MODES = InputField(default = "Fast Octree", description = "Palettizer quantization method")
+    quantizer:      QMode = InputField(default = "Fast Octree", description = "Palettizer quantization method")
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
-        image = context.services.images.get_pil_image(self.image.image_name)
+        image = context.images.get_pil(self.image.image_name)
         
-        palettize_image = image
-        if palettize_image.mode != 'RGB':
-            palettize_image = palettize_image.convert('RGB')
+        palettized_image = image
+        if palettized_image.mode != 'RGB':
+            palettized_image = palettized_image.convert('RGB')
 
         if self.palette_path == '':
             # print("Palette path is empty.")
@@ -66,27 +115,19 @@ class RetroPalettizeInvocation(BaseInvocation):
                 raise ValueError("No palette image or path was specified.")
             else:
                 # print("Using input image as palette.")
-                palette_image = context.services.images.get_pil_image(self.palette_image.image_name)
-                palettize_image = palettize(palettize_image, palette_image, self.prequantize, PIL_QUANTIZE_MAP[self.quantizer], self.dither)
+                palette_image = context.images.get_pil(self.palette_image.image_name)
+                palettized_image = palettize(palettized_image, palette_image, self.prequantize, QMap[self.quantizer], self.dither)
         else:
             # print("Palette path is " + self.palette_path)
             palette = self.palette_path
             #   Trim " from file path for lazy users like me (:
             palette = palette.replace('"', '')
             palette_image = Image.open(palette)
-            palettize_image = palettize(palettize_image, palette_image, self.prequantize, PIL_QUANTIZE_MAP[self.quantizer], self.dither)
+            palettized_image = palettize(palettized_image, palette_image, self.prequantize, QMap[self.quantizer], self.dither)
 
-        palettize_image = palettize_image.convert('RGB')
+        palettized_image = palettized_image.convert('RGB')
 
-        dto = context.services.images.create(
-            image = palettize_image,
-            image_origin = ResourceOrigin.INTERNAL,
-            image_category = ImageCategory.GENERAL,
-            node_id = self.id,
-            session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate,
-            workflow = self.workflow
-        )
+        dto = context.images.save(image = palettized_image)
 
         return ImageOutput(
             image = ImageField(image_name = dto.image_name),

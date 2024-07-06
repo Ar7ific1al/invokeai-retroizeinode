@@ -1,23 +1,19 @@
 from PIL import Image
 import numpy as np
 
-from invokeai.app.invocations.primitives import (
-    ImageField,
-    ImageOutput
-)
-from invokeai.app.models.image import (
-    ImageCategory,
-    ResourceOrigin
-)
-from invokeai.app.invocations.baseinvocation import(
+from invokeai.invocation_api import(
     BaseInvocation,
     InputField,
     InvocationContext,
-    invocation
+    WithMetadata,
+    invocation,
+    ImageField,
+    ImageOutput
 )
 
-@invocation("retro_crt_curvature", title = "CRT", tags = ["retro", "image", "distort"], category = "image", version = "1.0.0")
-class RetroCRTCurvatureInvocation(BaseInvocation):
+
+@invocation("retro_crt_curvature", title = "CRT", tags = ["retro", "image", "distort"], category = "image", version = "1.0.1")
+class RetroCRTCurvatureInvocation(BaseInvocation, WithMetadata):
     """ Distort the input image, simulating CRT display curvature """
 
     #   Inputs
@@ -56,7 +52,7 @@ class RetroCRTCurvatureInvocation(BaseInvocation):
     
             return intensity
         
-        image = context.services.images.get_pil_image(self.image.image_name).convert("RGB")
+        image = context.images.get_pil(self.image.image_name).convert("RGB")
         width, height = image.size
         
         #   Create normalized numpy array from input image
@@ -119,15 +115,7 @@ class RetroCRTCurvatureInvocation(BaseInvocation):
 
         image = Image.fromarray((crt_array * 255).astype(np.uint8)).convert("RGB")
         
-        dto = context.services.images.create(
-            image = image,
-            image_origin = ResourceOrigin.INTERNAL,
-            image_category = ImageCategory.GENERAL,
-            node_id = self.id,
-            session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate,
-            workflow = self.workflow
-        )
+        dto = context.images.save(image = image)
 
         return ImageOutput(
             image = ImageField(image_name = dto.image_name),

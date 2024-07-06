@@ -1,22 +1,18 @@
-from PIL import Image
 from typing import Literal
+from PIL import Image
 import numpy as np
 import cv2
 import random
 
-from invokeai.app.invocations.primitives import (
-    ImageField,
-    ImageOutput
-)
-from invokeai.app.models.image import (
-    ImageCategory,
-    ResourceOrigin
-)
-from invokeai.app.invocations.baseinvocation import(
+
+from invokeai.invocation_api import(
     BaseInvocation,
     InputField,
     InvocationContext,
-    invocation
+    WithMetadata,
+    invocation,
+    ImageField,
+    ImageOutput
 )
 
 SHAPES = Literal[
@@ -25,12 +21,12 @@ SHAPES = Literal[
     "Triangle",
 ]
 
-@invocation("retro_halftone", title = "Halftone", tags = ["retro", "image", "color"], category = "image", version = "1.0.0")
-class RetroHalftoneInvocation(BaseInvocation):
-    """ Apply a halftone-like effect to images """
+@invocation("retro_halftone", title = "Halftone", tags = ["retro", "image", "color"], category = "image", version = "1.0.1")
+class RetroHalftoneInvocation(BaseInvocation, WithMetadata):
+    ''' Apply a halftone-like effect to images '''
 
     #   Inputs
-    image:              ImageField  = InputField(description = "Input image for pixelization")
+    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
     shape:              SHAPES      = InputField(default = "Circle", description = "Halftone shape")
     size:               int         = InputField(default = 16, description = "Size of halftone shape")
     rotation:           int         = InputField(default = 0, description = "Rotation in degrees of the halftone shape when Shape != Circle")
@@ -41,7 +37,7 @@ class RetroHalftoneInvocation(BaseInvocation):
     #fmt: on
 
     def invoke(self, context: InvocationContext) -> ImageOutput:
-        image = context.services.images.get_pil_image(self.image.image_name)
+        image = context.images.get_pil(self.image.image_name)
         
         image = image.convert("RGB")
         
@@ -116,15 +112,7 @@ class RetroHalftoneInvocation(BaseInvocation):
         
         halftone_image = Image.fromarray(halftone)
 
-        dto = context.services.images.create(
-            image = halftone_image,
-            image_origin = ResourceOrigin.INTERNAL,
-            image_category = ImageCategory.GENERAL,
-            node_id = self.id,
-            session_id = context.graph_execution_state_id,
-            is_intermediate = self.is_intermediate,
-            workflow = self.workflow
-        )
+        dto = context.images.save(image = halftone_image)
 
         return ImageOutput(
             image = ImageField(image_name = dto.image_name),
