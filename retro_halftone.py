@@ -4,7 +4,6 @@ import numpy as np
 import cv2
 import random
 
-
 from invokeai.invocation_api import(
     BaseInvocation,
     InputField,

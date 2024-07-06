@@ -15,19 +15,19 @@ from invokeai.invocation_api import(
     invocation
 )
 
-
-#   Palette cache
+# Palette cache
 palettes_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "palettes")
-
-os.makedirs(palettes_dir, exist_ok = True)
-
+os.makedirs(palettes_dir, exist_ok=True)
 print(f"palettes_dir = {palettes_dir}")
 
 def list_palettes() -> list:
-    if not os.path.exists(palettes_dir):
-        return []
-    palettes = [f for f in os.listdir(palettes_dir) if f.lower().endswith((".png"))]
-    return sorted(palettes, key = lambda x: x.lower())
+    palettes = []
+    for root, _, files in os.walk(palettes_dir):
+        for file in files:
+            if file.lower().endswith(".png"):
+                relative_path = os.path.relpath(os.path.join(root, file), palettes_dir)
+                palettes.append(relative_path)
+    return sorted(palettes, key=lambda x: x.lower())
 
 available_palettes = list_palettes()
 
@@ -37,6 +37,7 @@ if available_palettes:
 else:
     PaletteLiteral = Literal["None"]
 
+print(f"[RETROIZE] Available palettes: {available_palettes}")
 
 def UpdatePalettes():
     def list_palettes() -> list:
