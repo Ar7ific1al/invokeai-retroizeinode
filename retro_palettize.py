@@ -60,8 +60,8 @@ class RetroPalettizeAdvInvocation(BaseInvocation, WithMetadata):
     ''' Palettize an image by applying a color palette '''
 
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
-    palette_image:  PaletteLiteral = InputField(default = None, description = "Palette image")
+    image:          ImageField = InputField(description = "Input image for pixelization")
+    palette_image:  PaletteLiteral = InputField(default = "None", description = "Palette image")
     dither:         bool = InputField(default = False, description = "Apply dithering to image when palettizing")
     prequantize:    bool = InputField(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")
     quantizer:      QMode = InputField(default = "Fast Octree", description = "Palettizer quantization method")
@@ -73,7 +73,7 @@ class RetroPalettizeAdvInvocation(BaseInvocation, WithMetadata):
         if palettized_image.mode != 'RGB':
             palettized_image = palettized_image.convert('RGB')
 
-        if self.palette_image == None:
+        if self.palette_image == "None":
                 raise ValueError("No palette image or path was specified.")
         else:
             # print("Using input image as palette.")
@@ -96,8 +96,8 @@ class RetroPalettizeInvocation(BaseInvocation, WithMetadata):
     ''' Palettize an image by applying a color palette '''
 
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image for pixelization")
-    palette_image:  ImageField = InputField(default = None, description = "Palette image")
+    image:          ImageField = InputField(description = "Input image for pixelization")
+    palette_image:  ImageField | None = InputField(default = None, description = "Palette image")
     palette_path:   str = InputField(default = "", description = "Palette image path, including \".png\" extension")
     dither:         bool = InputField(default = False, description = "Apply dithering to image when palettizing")
     prequantize:    bool = InputField(default = False, description = "Apply 256-color quantization with specified method prior to applying the color palette")

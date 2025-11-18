@@ -19,7 +19,7 @@ from invokeai.invocation_api import (
 class PaletteOutput(BaseInvocationOutput):
     """ Base class for Cell Fracture output """
     
-    image:      ImageField = InputField(default = None, description = "The palette output")
+    image:      ImageField = InputField(description = "The palette output")
     
     class Config:
         json_schema_extra = {"required": ["type", "palette"]}
@@ -29,7 +29,7 @@ class RetroGetPaletteInvocation(BaseInvocation, WithMetadata):
     ''' Get palette from an image, 256 colors max. '''
 
     #   Inputs
-    image:          ImageField  = InputField(default = None, description = "Input image to grab a palette from")
+    image:          ImageField  = InputField(description = "Input image to grab a palette from")
     
     def invoke(self, context: InvocationContext) -> ImageOutput:
         image_out = context.images.get_pil(self.image.image_name)
@@ -50,7 +50,7 @@ class RetroGetPaletteInvocation(BaseInvocation, WithMetadata):
 class RetroGetPaletteAdvInvocation(BaseInvocation, WithMetadata):
     ''' Get palette from an image, 256 colors max. Optionally export to a user-defined location. '''
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image to grab a palette from")
+    image:          ImageField = InputField(description = "Input image to grab a palette from")
     export:         bool = InputField(default = True, description = "Save palette PNG to specified path with optional name")
     subfolder:      str = InputField(default="", description = "Subfolder for the palette in nodes/Retroize/palettes/ folder")
     name:           str = InputField(default="", description = "Name for the palette image")
