@@ -35,7 +35,7 @@ class RetroQuantizeInvocation(BaseInvocation, WithMetadata):
     ''' Quantize an image to 256 or less colors '''
 
     #   Inputs
-    image:          ImageField = InputField(default = None, description = "Input image for quantizing")
+    image:          ImageField = InputField(description = "Input image for quantizing")
     colors:         int = InputField(default = 64, gt = 0, le = 256, description = "Number of colors the image should be reduced to")
     method:         QMode = InputField(default = "Median Cut", description = "Quantization method")
     kmeans:         int = InputField(default = 0, ge = 0, description = "k_means")

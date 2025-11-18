@@ -16,7 +16,7 @@ class PixelizeInvocation(BaseInvocation, WithMetadata):
     ''' Pixelize an image. Downsample, upsample. '''
 
     #   Inputs
-    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
+    image:              ImageField  = InputField(description = "Input image for pixelization")
     downsample_factor:  int         = InputField(default = 4, gt = 0, le = 30, description = "Image resizing factor. Higher = smaller image.")
     upsample:           bool        = InputField(default = True, description = "Upsample to original resolution")
 

@@ -25,7 +25,7 @@ class RetroHalftoneInvocation(BaseInvocation, WithMetadata):
     ''' Apply a halftone-like effect to images '''
 
     #   Inputs
-    image:              ImageField  = InputField(default = None, description = "Input image for pixelization")
+    image:              ImageField  = InputField(description = "Input image for pixelization")
     shape:              SHAPES      = InputField(default = "Circle", description = "Halftone shape")
     size:               int         = InputField(default = 16, description = "Size of halftone shape")
     rotation:           int         = InputField(default = 0, description = "Rotation in degrees of the halftone shape when Shape != Circle")
